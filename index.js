@@ -7,6 +7,7 @@ var command = path.join(__dirname, 'node_modules/stylint/bin/stylint');
 
 module.exports = function (options, logger) {
 	logger = logger || console.log;
+	options = options || {};
 
 	return through.obj(function (file, enc, cb) {
 		if (file.isNull()) {
@@ -24,9 +25,13 @@ module.exports = function (options, logger) {
 		var args = [];
 		args.push(file.path);
 
-		for (var key in options) {
-			args.push('--' + key);
-			args.push(options[key]);
+		if (options.config) {
+			args.push('--config');
+			args.push(options.config);
+		}
+
+		if (options.strict) {
+			args.push('--strict');
 		}
 
 		var lint = spawn(command, args);
