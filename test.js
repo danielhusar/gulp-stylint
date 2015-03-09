@@ -8,9 +8,7 @@ it('It should log zero units', function (cb) {
 	var log = sinon.spy();
 	var stream = stylint({}, log);
 
-	stream.on('data', function (file) {
-		assert(true);
-	});
+	stream.on('data', function () {});
 
 	stream.on('end', function () {
 		var warnings = log.getCall(0).args[0].split('\n');
@@ -36,9 +34,7 @@ it('It should log zero units and colon warning with custom options', function (c
 		config: 'fixtures/.configrc'
 	}, log);
 
-	stream.on('data', function (file) {
-		assert(true);
-	});
+	stream.on('data', function () {});
 
 	stream.on('end', function () {
 		var warnings = log.getCall(0).args[0].split('\n');
