@@ -1,0 +1,34 @@
+{
+  "name": "gulp-stylint",
+  "version": "0.0.1",
+  "description": "Gulp plugin for stylus linter",
+  "license": "MIT",
+  "repository": "danielhusar/gulp-stylint",
+  "author": {
+    "name": "Daniel Husar",
+    "email": "dano.husar@gmail.com",
+    "url": "https://github.com/danielhusar"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "gulpplugin"
+  ],
+  "dependencies": {
+    "stylint": "^0.9.0",
+    "win-spawn": "^2.0.0",
+    "gulp-util": "^3.0.0",
+    "through2": "^0.6.1"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "sinon": "^1.13.0"
+  }
+}
