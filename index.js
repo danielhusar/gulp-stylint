@@ -1,8 +1,9 @@
 'use strict';
+var path = require('path');
 var gutil = require('gulp-util');
 var through = require('through2');
 var spawn = require('win-spawn');
-var command = 'node_modules/stylint/bin/stylint';
+var command = path.join(__dirname, 'node_modules/stylint/bin/stylint');
 
 module.exports = function (options, logger) {
 	logger = logger || console.log;
@@ -21,7 +22,7 @@ module.exports = function (options, logger) {
 		}
 
 		var args = [];
-		args.push(file.relative || file.path);
+		args.push(file.path);
 
 		for (var key in options) {
 			args.push('--' + key);
@@ -29,12 +30,14 @@ module.exports = function (options, logger) {
 		}
 
 		var lint = spawn(command, args);
+		var warnings = '';
 
 		lint.stdout.on('data', function (data) {
-			logger(data.toString());
+			warnings = warnings + data.toString();
 		});
 
 		lint.stdout.on('end', function (data) {
+			logger(warnings);
 			this.push(file);
 			cb();
 		}.bind(this));

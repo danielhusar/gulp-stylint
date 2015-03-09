@@ -1,7 +1,7 @@
 {
   "name": "gulp-stylint",
-  "version": "0.0.1",
-  "description": "Gulp plugin for stylus linter",
+  "version": "1.0.0",
+  "description": "Gulp plugin for stylus stylint linter",
   "license": "MIT",
   "repository": "danielhusar/gulp-stylint",
   "author": {
@@ -19,6 +19,9 @@
     "index.js"
   ],
   "keywords": [
+    "stylint",
+    "stylus",
+    "linter",
     "gulpplugin"
   ],
   "dependencies": {

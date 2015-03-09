@@ -51,7 +51,7 @@ Run all tests, regardless of config
 Type: `function`  
 Default: `console.log`
 
-Default logger function, you can use for example `gutil.log.bind(null, 'gulp-stylint:');`
+Default warnings log function, you can use for example `gutil.log.bind(null, 'gulp-stylint:');`
 
 
 ## License
