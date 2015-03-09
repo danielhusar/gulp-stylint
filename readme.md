@@ -19,7 +19,6 @@ var stylint = require('gulp-stylint');
 gulp.task('default', function () {
 	return gulp.src('src/*.styl')
 		.pipe(stylint())
-		.pipe(gulp.dest('dist'));
 });
 ```
 
@@ -39,7 +38,7 @@ Pass in location of custom config file
 
 ##### strict
 
-Type: `string`  
+Type: `boolean`  
 Default: `undefined`
 
 Run all tests, regardless of config
