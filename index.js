@@ -10,11 +10,6 @@ module.exports = function (options, logger) {
 	options = options || {};
 
 	return through.obj(function (file, enc, cb) {
-		if (file.isNull()) {
-			this.push(file);
-			cb();
-			return;
-		}
 
 		if (file.isStream()) {
 			this.emit('error', new gutil.PluginError('gulp-stylint', 'Streaming not supported'));
@@ -50,7 +45,6 @@ module.exports = function (options, logger) {
 			this.push(file);
 			cb();
 		}.bind(this));
-
 
 	});
 };
