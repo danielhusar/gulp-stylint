@@ -41,15 +41,16 @@ module.exports = function (options, logger) {
 			warnings = warnings + data.toString();
 		});
 
-		lint.stdout.on('end', function (data) {
+		lint.stderr.on('data', function (data) {
+			gutil.log('gulp-stylint: stderr:', data.toString());
+		});
+
+		lint.on('close', function (data) {
 			logger(warnings);
 			this.push(file);
 			cb();
 		}.bind(this));
 
-		lint.stderr.on('error', function (data) {
-			gutil.log('gulp-stylint: stderr:', data);
-		});
 
 	});
 };
