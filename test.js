@@ -4,6 +4,26 @@ var gutil = require('gulp-util');
 var sinon = require('sinon');
 var stylint = require('./');
 
+it('It should not log if file is valid', function (cb) {
+	var log = sinon.spy();
+	var stream = stylint({}, log);
+
+	stream.on('data', function () {});
+
+	stream.on('end', function () {
+		assert(!log.called);
+		cb();
+	});
+
+	stream.write(new gutil.File({
+		base: __dirname,
+		path: __dirname + '/fixtures/valid.styl',
+		contents: new Buffer('')
+	}));
+
+	stream.end();
+});
+
 it('It should log zero units', function (cb) {
 	var log = sinon.spy();
 	var stream = stylint({}, log);
@@ -20,7 +40,7 @@ it('It should log zero units', function (cb) {
 
 	stream.write(new gutil.File({
 		base: __dirname,
-		path: __dirname + '/fixtures/units.styl',
+		path: __dirname + '/fixtures/novalid.styl',
 		contents: new Buffer('')
 	}));
 
@@ -48,7 +68,7 @@ it('It should log zero units and colon warning with custom options', function (c
 
 	stream.write(new gutil.File({
 		base: __dirname,
-		path: __dirname + '/fixtures/units.styl',
+		path: __dirname + '/fixtures/novalid.styl',
 		contents: new Buffer('')
 	}));
 
