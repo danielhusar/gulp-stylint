@@ -39,8 +39,16 @@ module.exports = function (options, logger) {
 			gutil.log('gulp-stylint: stderr:', data.toString());
 		});
 
-		lint.on('close', function (data) {
-			logger(warnings);
+		lint.on('close', function (code, signal) {
+      // suppress success message
+      // we should be able to test the exit code
+      // but stylint does not respect exit codes - always zero
+      // use this test if stylint is updated to respect exit code
+      // if(code) {
+      // so this messy hack instead
+      if(!/all clear!\s+/.test(warnings)) {
+			  logger(warnings);
+      }
 			this.push(file);
 			cb();
 		}.bind(this));
