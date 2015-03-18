@@ -39,8 +39,11 @@ module.exports = function (options, logger) {
 			gutil.log('gulp-stylint: stderr:', data.toString());
 		});
 
-		lint.on('close', function (data) {
-			logger(warnings);
+		lint.on('close', function (code, signal) {
+      // suppress success message
+      if(code) {
+			  logger(warnings);
+      }
 			this.push(file);
 			cb();
 		}.bind(this));
