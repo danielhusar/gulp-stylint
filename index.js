@@ -1,9 +1,8 @@
 'use strict';
-var path = require('path');
 var gutil = require('gulp-util');
 var spawn = require('win-spawn');
 var through = require('through2');
-var command = path.join(__dirname, 'node_modules/stylint/bin/stylint');
+var command = require.resolve('stylint').replace(/index\.js$/, 'bin/stylint');
 
 module.exports = function (options, logger) {
 	logger = logger || console.log;
