@@ -25,10 +25,10 @@ module.exports = function (options, logger) {
 			args.push('--strict');
 		}
 
+		var warnings = '';
 		var lint = spawn(command, args);
 		lint.stdout.setEncoding('utf8');
 		lint.stderr.setEncoding('utf8');
-		var warnings = '';
 
 		lint.stdout.on('data', function (data) {
 			warnings = warnings + data.toString();
@@ -38,14 +38,8 @@ module.exports = function (options, logger) {
 			gutil.log('gulp-stylint: stderr:', data.toString());
 		});
 
-		lint.on('close', function (code, signal) {
-			// suppress success message
-			// we should be able to test the exit code
-			// but stylint does not respect exit codes - always zero
-			// use this test if stylint is updated to respect exit code
-			// if(code) {
-			// so this messy hack instead
-			if(!/all clear!\s+/.test(warnings)) {
+		lint.on('close', function (code) {
+			if (code !== 0) {
 				logger(warnings);
 			}
 			this.push(file);
