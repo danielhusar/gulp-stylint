@@ -22,12 +22,25 @@ gulp.task('default', function () {
 });
 ```
 
+## Custom options
+
+```js
+var gulp = require('gulp');
+var stylint = require('gulp-stylint');
+
+gulp.task('default', function () {
+	return gulp.src('src/*.styl')
+		.pipe(stylint({config: '.stylintrc'}))
+});
+```
+
 
 ## API
 
 ### stylint(options, logger)
 
 #### options
+type: `object`
 
 ##### config
 
