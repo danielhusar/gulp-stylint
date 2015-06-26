@@ -25,7 +25,7 @@
     "gulpplugin"
   ],
   "dependencies": {
-    "stylint": "^0.9.9",
+    "stylint": "^1.0.2",
     "win-spawn": "^2.0.0",
     "gulp-util": "^3.0.0",
     "through2": "^0.6.1"
