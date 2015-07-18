@@ -41,6 +41,10 @@ module.exports = function (options, logger) {
 		lint.on('close', function (code) {
 			if (code !== 0) {
 				logger(warnings);
+				if (options.failOnError) {
+					cb(new gutil.PluginError('gulp-stylint', 'Stylint failed for ' + file.relative), file)
+					return;
+				}
 			}
 			this.push(file);
 			cb();

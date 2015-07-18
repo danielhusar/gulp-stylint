@@ -59,3 +59,17 @@ it('It should log zero units and colon warning with custom options', function (c
 
 	file('novalid.styl');
 });
+
+
+it('It should fail if option is provided', function (cb) {
+	stream = stylint({
+		failOnError: true
+	}, log);
+
+	stream.on('error', function (err) {
+		assert.equal(err.message, 'Stylint failed for fixtures/novalid.styl')
+		cb();
+	});
+
+	file('novalid.styl');
+});
