@@ -56,6 +56,13 @@ Default: `undefined`
 
 Run all tests, regardless of config
 
+##### failOnError
+
+Type: `boolean`  
+Default: `undefined`
+
+Fail the gulp-process if a warning is issued
+
 #### logger
 
 ##### default logger function
