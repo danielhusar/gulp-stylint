@@ -5,32 +5,34 @@
   "license": "MIT",
   "repository": "danielhusar/gulp-stylint",
   "author": {
-    "name": "Daniel Husar",
     "email": "dano.husar@gmail.com",
+    "name": "Daniel Husar",
     "url": "https://github.com/danielhusar"
   },
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
+    "pretest": "jshint index.js test.js",
     "test": "mocha"
   },
   "files": [
     "index.js"
   ],
   "keywords": [
-    "stylint",
-    "stylus",
+    "gulpplugin",
     "linter",
-    "gulpplugin"
+    "stylint",
+    "stylus"
   ],
   "dependencies": {
-    "stylint": "^1.0.9",
-    "win-spawn": "^2.0.0",
     "gulp-util": "^3.0.0",
-    "through2": "^0.6.1"
+    "stylint": "^1.0.9",
+    "through2": "^0.6.1",
+    "win-spawn": "^2.0.0"
   },
   "devDependencies": {
+    "jshint": "^2.8.0",
     "mocha": "*",
     "sinon": "^1.13.0"
   }
