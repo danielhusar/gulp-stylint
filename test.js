@@ -53,3 +53,18 @@ it('It should not log if file is valid with custom options', function (cb) {
 
 	file('novalid.styl');
 });
+
+it('It should fail if option is provided', function (cb) {
+	var log = sinon.spy();
+	stream = stylint({
+		failOnError: true
+	}, log);
+
+	stream.on('error', function (err) {
+		assert.equal(err.message, 'Stylint failed for fixtures/novalid.styl')
+		cb();
+	});
+
+	file('novalid.styl');
+});
+
