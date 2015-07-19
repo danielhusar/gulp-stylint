@@ -3,19 +3,24 @@
 'use strict';
 
 var assert = require('assert');
+var fs = require('fs');
+var path = require('path');
 var gutil = require('gulp-util');
 var sinon = require('sinon');
 var stylint = require('./');
 var stream;
 
 function file (filename) {
-	stream.write(new gutil.File({
-		base: __dirname,
-		path: __dirname + '/fixtures/' + filename,
-		contents: new Buffer('')
-	}));
-	stream.on('data', function () {});
-	stream.end();
+	var pathToFile = path.resolve('fixtures', filename);
+
+	fs.readFile(pathToFile, function (err, data) {
+		stream.write(new gutil.File({
+			path: pathToFile,
+			contents: data
+		}));
+		stream.on('data', function () {});
+		stream.end();
+	});
 }
 
 it('It should not log if file is valid', function (cb) {
