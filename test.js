@@ -1,3 +1,5 @@
+/*jshint mocha:true*/
+
 'use strict';
 
 var assert = require('assert');
@@ -6,10 +8,10 @@ var sinon = require('sinon');
 var stylint = require('./');
 var stream;
 
-function file (file) {
+function file (filename) {
 	stream.write(new gutil.File({
 		base: __dirname,
-		path: __dirname + '/fixtures/' + file,
+		path: __dirname + '/fixtures/' + filename,
 		contents: new Buffer('')
 	}));
 	stream.on('data', function () {});
@@ -61,10 +63,9 @@ it('It should fail if option is provided', function (cb) {
 	}, log);
 
 	stream.on('error', function (err) {
-		assert.equal(err.message, 'Stylint failed for fixtures/novalid.styl')
+		assert.equal(err.message, 'Stylint failed for fixtures/novalid.styl');
 		cb();
 	});
 
 	file('novalid.styl');
 });
-
