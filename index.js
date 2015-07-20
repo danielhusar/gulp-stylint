@@ -1,55 +1,59 @@
 'use strict';
 var gutil = require('gulp-util');
-var spawn = require('win-spawn');
 var through = require('through2');
-var command = require.resolve('stylint').replace(/index\.js$/, 'bin/stylint');
+var stylint = require('stylint');
 
 module.exports = function (options, logger) {
 	logger = logger || console.log;
 	options = options || {};
+	var failOnError = options.failOnError;
+
+	delete options.failOnError;
 
 	return through.obj(function (file, enc, cb) {
+		var that = this;
 
+		if (file.isNull()) {
+			return cb(null, file); // pass along
+		}
 		if (file.isStream()) {
-			this.emit('error', new gutil.PluginError('gulp-stylint', 'Streaming not supported'));
-			cb();
-			return;
+			return cb(gutil.PluginError('gulp-stylint', 'Streaming not supported'), file);
+		}
+		if (Object.keys(options).length < 1) {
+			options = undefined;
 		}
 
-		var args = [file.path];
-		if (options.config) {
-			args.push('--config');
-			args.push(options.config);
-		}
-		if (options.strict) {
-			args.push('--strict');
-		}
+		stylint(file.path, options)
+			.methods({
+				read: function () {
+					this.cache.filesLen = 1;
+					this.cache.fileNo = 1;
+					this.cache.file = file.path;
+					this.cache.files = [file.path];
+					this.state.quiet = true;
+					this.parse(null, [file.contents.toString(enc)]);
+				},
+				done: function () {
+					var warningsOrErrors = [].concat(this.cache.errs, this.cache.warnings).filter(function(str) { return !!str; });
 
-		var warnings = '';
-		var lint = spawn(command, args);
-		lint.stdout.setEncoding('utf8');
-		lint.stderr.setEncoding('utf8');
+					// HACK: reset stylint, since it accidentally shares global state
+					this.resetOnChange();
 
-		lint.stdout.on('data', function (data) {
-			warnings = warnings + data.toString();
-		});
+					if (warningsOrErrors.length) {
+						var msg = warningsOrErrors.join('\n\n');
+						msg += '\n' + this.cache.msg;
+						logger(msg);
+						if (failOnError) {
+							cb(new gutil.PluginError('gulp-stylint', 'Stylint failed for ' + file.relative), file);
+							return;
+						}
+					}
 
-		lint.stderr.on('data', function (data) {
-			gutil.log('gulp-stylint: stderr:', data.toString());
-		});
-
-		lint.on('close', function (code) {
-			if (code !== 0) {
-				logger(warnings);
-				if (options.failOnError) {
-					cb(new gutil.PluginError('gulp-stylint', 'Stylint failed for ' + file.relative), file);
-					return;
+					that.push(file);
+					cb();
 				}
-			}
-			this.push(file);
-			cb();
-		}.bind(this));
-
+			})
+			.create();
 	});
 
 };
