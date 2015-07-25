@@ -11,6 +11,10 @@ module.exports = function (options, logger) {
 	if (options) {
 		failOnError = options.failOnError;
 		delete options.failOnError;
+
+		if (Object.keys(options).length === 0) {
+			options = undefined;
+		}
 	}
 
 	return through.obj(function (file, enc, cb) {
