@@ -5,10 +5,17 @@ var stylint = require('stylint');
 
 module.exports = function (options, logger) {
 	logger = logger || console.log;
-	options = options || {};
-	var failOnError = options.failOnError;
 
-	delete options.failOnError;
+	var failOnError;
+
+	if (options) {
+		failOnError = options.failOnError;
+		delete options.failOnError;
+
+		if (Object.keys(options).length === 0) {
+			options = undefined;
+		}
+	}
 
 	return through.obj(function (file, enc, cb) {
 		var that = this;
@@ -18,9 +25,6 @@ module.exports = function (options, logger) {
 		}
 		if (file.isStream()) {
 			return cb(gutil.PluginError('gulp-stylint', 'Streaming not supported'), file);
-		}
-		if (Object.keys(options).length < 1) {
-			options = undefined;
 		}
 
 		stylint(file.path, options)
