@@ -10,17 +10,21 @@ var sinon = require('sinon');
 var stylint = require('./');
 var stream;
 
-function file (filename) {
-	var pathToFile = path.resolve('fixtures', filename);
+function file(filenames) {
+	var files = Array.isArray(filenames) ? filenames : [filenames];
 
-	fs.readFile(pathToFile, function (err, data) {
+	files.forEach(function (filename) {
+		var pathToFile = path.resolve('fixtures', filename);
+
 		stream.write(new gutil.File({
 			path: pathToFile,
-			contents: data
+			contents: fs.readFileSync(pathToFile)
 		}));
-		stream.on('data', function () {});
-		stream.end();
 	});
+
+	stream.on('data', function () {});
+
+	stream.end();
 }
 
 it('It should not log if file is valid', function (cb) {
