@@ -78,3 +78,14 @@ it('It should fail if option is provided', function (cb) {
 
 	file('novalid.styl');
 });
+
+it('It should not explode with multiple files', function (cb) {
+		var log = sinon.spy();
+		stream = stylint({}, log);
+		stream.on('end', function () {
+				assert(!log.called);
+				cb();
+		});
+
+		file(['valid.styl', 'valid.styl']);
+});
