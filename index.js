@@ -35,13 +35,13 @@ module.exports = function (options, logger) {
 					this.parse(null, [file.contents.toString(enc)]);
 				},
 				done: function () {
-					var warningsOrErrors = [].concat(this.cache.errs, this.cache.warnings).filter(function(str) { return !!str; });
+					var warningsOrErrors = [].concat(this.cache.errs, this.cache.warnings);
 
 					// HACK: reset stylint, since it accidentally shares global state
 					this.resetOnChange();
 
 					if (warningsOrErrors.length) {
-						var msg = warningsOrErrors.join('\n\n');
+						var msg = warningsOrErrors.filter(function(str) { return !!str; }).join('\n\n');
 						msg += '\n' + this.cache.msg;
 						logger(msg);
 						if (failOnError) {
