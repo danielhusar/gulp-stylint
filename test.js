@@ -65,6 +65,20 @@ it('It should not log if file is valid with custom options', function (cb) {
 	file('novalid.styl');
 });
 
+it('It should log if file is invalid with custom options', function (cb) {
+	var log = sinon.spy();
+	stream = stylint({
+		config: 'config/.stylintrc'
+	}, log);
+
+	stream.on('end', function () {
+		assert(log.called);
+		cb();
+	});
+
+	file('valid.styl');
+});
+
 it('It should fail if option is provided', function (cb) {
 	var log = sinon.spy();
 	stream = stylint({
