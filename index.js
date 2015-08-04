@@ -1,4 +1,5 @@
 'use strict';
+var fs = require('fs');
 var gutil = require('gulp-util');
 var through = require('through2');
 var stylint = require('stylint');
@@ -10,6 +11,10 @@ module.exports = function (options, logger) {
 
 	delete options.failOnError;
 
+	if (options.config) {
+		options = JSON.parse(fs.readFileSync(options.config));
+	}
+
 	if (Object.keys(options).length === 0) {
 		options = undefined;
 	}
@@ -20,6 +25,7 @@ module.exports = function (options, logger) {
 		if (file.isNull()) {
 			return cb(null, file); // pass along
 		}
+
 		if (file.isStream()) {
 			return cb(gutil.PluginError('gulp-stylint', 'Streaming not supported'), file);
 		}
