@@ -44,10 +44,10 @@ type: `object`
 
 ##### config
 
-Type: `string`  
+Type: `string` or `object`  
 Default: `undefined`
 
-Pass in location of custom config file
+Pass in path to custom rules configuration file as a string or include the rules inline as an object. If no configuration is passed in, it will use the `.stylintrc` file in the project root if present. If that file is not present, it will use default rules.
 
 ##### failOnError
 

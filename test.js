@@ -79,6 +79,42 @@ it('It should log if file is invalid with custom options', function (cb) {
 	file('valid.styl');
 });
 
+it('It should not log if file is valid with custom inline options', function (cb) {
+	var log = sinon.spy();
+	stream = stylint({
+		config: {
+			colons: 'always',
+			semicolons: 'always',
+			zeroUnits: true
+		}
+	}, log);
+
+	stream.on('end', function () {
+		assert(!log.called);
+		cb();
+	});
+
+	file('novalid.styl');
+});
+
+it('It should log if file is invalid with custom inline options', function (cb) {
+	var log = sinon.spy();
+	stream = stylint({
+		config: {
+			colons: 'always',
+			semicolons: 'always',
+			zeroUnits: true
+		}
+	}, log);
+
+	stream.on('end', function () {
+		assert(log.called);
+		cb();
+	});
+
+	file('valid.styl');
+});
+
 it('It should fail if option is provided', function (cb) {
 	var log = sinon.spy();
 	stream = stylint({

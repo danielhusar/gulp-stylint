@@ -8,15 +8,12 @@ module.exports = function (options, logger) {
 	logger = logger || console.log;
 	options = options || {};
 	var failOnError = options.failOnError;
+	var rules;
 
-	delete options.failOnError;
-
-	if (options.config) {
-		options = JSON.parse(fs.readFileSync(options.config));
-	}
-
-	if (Object.keys(options).length === 0) {
-		options = undefined;
+	if (typeof options.config === 'string') {
+		rules = JSON.parse(fs.readFileSync(options.config));
+	} else if (typeof options.config === 'object') {
+		rules = options.config;
 	}
 
 	return through.obj(function (file, enc, cb) {
@@ -30,7 +27,7 @@ module.exports = function (options, logger) {
 			return cb(gutil.PluginError('gulp-stylint', 'Streaming not supported'), file);
 		}
 
-		stylint(file.path, options)
+		stylint(file.path, rules)
 			.methods({
 				read: function () {
 					this.cache.filesLen = 1;
