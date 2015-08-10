@@ -1,5 +1,4 @@
 'use strict';
-var fs = require('fs');
 var gutil = require('gulp-util');
 var through = require('through2');
 var stylint = require('stylint');
@@ -8,12 +7,17 @@ module.exports = function (options, logger) {
 	logger = logger || console.log;
 	options = options || {};
 	var failOnError = options.failOnError;
-	var rules;
+	var reporter = options.reporter;
+	var rules = options.rules;
+	var reporterOptions;
 
-	if (typeof options.config === 'string') {
-		rules = JSON.parse(fs.readFileSync(options.config));
-	} else if (typeof options.config === 'object') {
-		rules = options.config;
+	if (reporter) {
+		if (typeof reporter === 'string') {
+			reporter = require(reporter);
+		} else if (typeof reporter === 'object') {
+			reporterOptions = reporter.reporterOptions;
+			reporter = require(reporter.reporter);
+		}
 	}
 
 	return through.obj(function (file, enc, cb) {
@@ -35,6 +39,12 @@ module.exports = function (options, logger) {
 					this.cache.file = file.path;
 					this.cache.files = [file.path];
 					this.state.quiet = true;
+
+					if (reporter) {
+						this.reporter = reporter;
+						this.config.reporterOptions = reporterOptions;
+					}
+
 					this.parse(null, [file.contents.toString(enc)]);
 				},
 				done: function () {
@@ -57,7 +67,7 @@ module.exports = function (options, logger) {
 					cb();
 				}
 			})
-			.create();
+			.create({}, options);
 	});
 
 };

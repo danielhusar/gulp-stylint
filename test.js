@@ -7,10 +7,11 @@ var fs = require('fs');
 var path = require('path');
 var gutil = require('gulp-util');
 var sinon = require('sinon');
+var chalk = require('chalk');
 var stylint = require('./');
 var stream;
 
-function file(filenames) {
+function file (filenames) {
 	var files = Array.isArray(filenames) ? filenames : [filenames];
 
 	files.forEach(function (filename) {
@@ -82,7 +83,7 @@ it('It should log if file is invalid with custom options', function (cb) {
 it('It should not log if file is valid with custom inline options', function (cb) {
 	var log = sinon.spy();
 	stream = stylint({
-		config: {
+		rules: {
 			colons: 'always',
 			semicolons: 'always',
 			zeroUnits: true
@@ -100,7 +101,7 @@ it('It should not log if file is valid with custom inline options', function (cb
 it('It should log if file is invalid with custom inline options', function (cb) {
 	var log = sinon.spy();
 	stream = stylint({
-		config: {
+		rules: {
 			colons: 'always',
 			semicolons: 'always',
 			zeroUnits: true
@@ -130,12 +131,51 @@ it('It should fail if option is provided', function (cb) {
 });
 
 it('It should not explode with multiple files', function (cb) {
-		var log = sinon.spy();
-		stream = stylint({}, log);
-		stream.on('end', function () {
-				assert(!log.called);
-				cb();
-		});
+	var log = sinon.spy();
+	stream = stylint({}, log);
+	stream.on('end', function () {
+		assert(!log.called);
+		cb();
+	});
 
-		file(['valid.styl', 'valid.styl']);
+	file(['valid.styl', 'valid.styl']);
+});
+
+it('It should accept custom reporter', function (cb) {
+	var log = sinon.spy();
+	stream = stylint({
+		reporter: 'stylint-stylish'
+	}, log);
+	stream.on('end', function () {
+		assert(log.called);
+		var logCall = log.getCall(0).args[0].trim();
+		var firstWarning = logCall.split('\n')[1].trim().replace(/\s\s+/g, ' ');
+
+		assert.equal(chalk.stripColor(firstWarning), 'line 2: unecessary semicolon found');
+		cb();
+	});
+
+	file('novalid.styl');
+});
+
+it('It should accept custom reporter with custom options', function (cb) {
+	var log = sinon.spy();
+	stream = stylint({
+		reporter: {
+			reporter: 'stylint-stylish',
+			reporterOptions: {
+				verbose: true
+			}
+		}
+	}, log);
+	stream.on('end', function () {
+		assert(log.called);
+		var logCall = log.getCall(0).args[0].trim();
+		var firstWarning = logCall.split('\n')[1].trim().replace(/\s\s+/g, ' ');
+
+		assert.equal(chalk.stripColor(firstWarning), 'line 2: unecessary semicolon found margin: 0px;');
+		cb();
+	});
+
+	file('novalid.styl');
 });

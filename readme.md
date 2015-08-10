@@ -44,10 +44,43 @@ type: `object`
 
 ##### config
 
-Type: `string` or `object`  
+Type: `string`  
 Default: `undefined`
 
-Pass in path to custom rules configuration file as a string or include the rules inline as an object. If no configuration is passed in, it will use the `.stylintrc` file in the project root if present. If that file is not present, it will use default rules.
+Pass in path to custom rules configuration file as a string. If no configuration is passed in, it will use the `.stylintrc` file in the project root if present. If that file is not present, it will use default rules.
+
+##### rules
+
+type: `object`  
+Default: `undefined`
+
+Pass in an object with rules for `stylint` to lint by. This will override all default rules.
+
+##### reporter
+
+type: `string or object`  
+Default: `undefined`
+
+If using `rules`, and you want to use a custom reporter, you can pass in either a string with it's name, or an object containing both a string with the name, and options for it.  
+If you only pass in `config`, this config can be placed in that file instead.
+
+Example:
+```js
+gulp.task('default', function () {
+  return gulp.src('src/*.styl')
+    .pipe(stylint({
+      rules: { semicolons: 'always' },
+      reporter: {
+        reporter: 'stylint-stylish',
+        reporterOptions: {
+          verbose: true
+        }
+      }
+    }));
+}
+```
+
+__NOTE__: You must install the reporter yourself. E.g. `npm i -D stylint-stylish`.
 
 ##### failOnError
 

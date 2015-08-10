@@ -27,12 +27,14 @@
   ],
   "dependencies": {
     "gulp-util": "^3.0.0",
-    "stylint": "^1.0.9",
+    "stylint": "^1.0.11",
     "through2": "^0.6.1"
   },
   "devDependencies": {
+    "chalk": "^1.1.0",
     "jshint": "^2.8.0",
     "mocha": "*",
-    "sinon": "^1.13.0"
+    "sinon": "^1.13.0",
+    "stylint-stylish": "^1.2.0"
   }
 }
