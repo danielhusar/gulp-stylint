@@ -1,4 +1,4 @@
-# [master](https://github.com/danielhusar/gulp-stylint/compare/v2.0.0...master) (unreleased)
+# [3.0.0](https://github.com/danielhusar/gulp-stylint/compare/v2.0.0...v3.0.0) (2015-08-12)
 ## Breaking changes
 * Just piping the files through `gulp-stylint` does not print anything to the console, use the `csslint.reporter`-method
 
