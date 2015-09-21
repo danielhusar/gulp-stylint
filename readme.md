@@ -19,6 +19,7 @@ var stylint = require('gulp-stylint');
 gulp.task('default', function () {
 	return gulp.src('src/*.styl')
 		.pipe(stylint())
+		.pipe(stylint.reporter());
 });
 ```
 
@@ -31,13 +32,82 @@ var stylint = require('gulp-stylint');
 gulp.task('default', function () {
 	return gulp.src('src/*.styl')
 		.pipe(stylint({config: '.stylintrc'}))
+		.pipe(stylint.reporter());
 });
 ```
 
+## Reporters
+
+### Standard
+Standard reporter is just printing out the report created from `stylint` (possibly formatted by #reporter).
+
+```js
+var gulp = require('gulp');
+var stylint = require('gulp-stylint');
+
+gulp.task('default', function () {
+	return gulp.src('src/*.styl')
+		.pipe(stylint())
+		.pipe(stylint.reporter());
+});
+```
+
+#### Reporter options
+
+##### logger
+Type: `function`  
+Default: `console.log`
+
+Default warnings log function, you can use for example `gutil.log`.
+
+```js
+var gulp = require('gulp');
+var stylint = require('gulp-stylint');
+
+gulp.task('default', function () {
+	return gulp.src('src/*.styl')
+		.pipe(stylint())
+		.pipe(stylint.reporter({ logger: gutil.log.bind(null, 'gulp-stylint:') }));
+});
+```
+
+### Fail-reporter
+Another reporter you can use is the `fail-reporter`. You can use it to fail the `gulp`-process in the case of linting-errors, or optionally warnings.
+
+```js
+var gulp = require('gulp');
+var stylint = require('gulp-stylint');
+
+gulp.task('default', function () {
+	return gulp.src('src/*.styl')
+		.pipe(stylint())
+		.pipe(stylint.reporter())
+		.pipe(stylint.reporter('fail'));
+});
+```
+
+#### Fail-reporter options
+
+##### failOnWarning
+Type: `boolean`  
+Default: `false`
+If provided, fail the process not only on errors from `stylint`, but also on warnings.
+
+```js
+var gulp = require('gulp');
+var stylint = require('gulp-stylint');
+
+gulp.task('default', function () {
+	return gulp.src('src/*.styl')
+		.pipe(stylint())
+		.pipe(stylint.reporter())
+		.pipe(stylint.reporter('fail', { failOnWarning: true }));
+});
+```
 
 ## API
 
-### stylint(options, logger)
+### stylint(options)
 
 #### options
 type: `object`
@@ -76,27 +146,12 @@ gulp.task('default', function () {
           verbose: true
         }
       }
-    }));
+    }))
+    .pipe(stylint.reporter());
 }
 ```
 
 __NOTE__: You must install the reporter yourself. E.g. `npm i -D stylint-stylish`.
-
-##### failOnError
-
-Type: `boolean`  
-Default: `undefined`
-
-Fail the gulp-process if a warning is issued
-
-#### logger
-
-##### default logger function
-
-Type: `function`  
-Default: `console.log`
-
-Default warnings log function, you can use for example `gutil.log.bind(null, 'gulp-stylint:');`
 
 
 ## License
