@@ -1,6 +1,6 @@
 # [3.0.0](https://github.com/danielhusar/gulp-stylint/compare/v2.0.0...v3.0.0) (2015-08-12)
 ## Breaking changes
-* Just piping the files through `gulp-stylint` does not print anything to the console, use the `csslint.reporter`-method
+* Just piping the files through `gulp-stylint` does not print anything to the console, use the `stylint.reporter`-method
 
 ## Features
 * Added a `fail`-reporter allowing you to fail the proecss on `error`. Optionally provide `{ failOnWarning: true }` as second option to alsow fail on warnings
