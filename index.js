@@ -25,6 +25,7 @@ module.exports = function (options) {
 	var reporterOptions;
 
 	if (reporter) {
+		delete options.reporter;
 		if (typeof reporter === 'string') {
 			reporter = require(reporter);
 		} else if (typeof reporter === 'object') {
