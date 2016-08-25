@@ -46,20 +46,6 @@ module.exports = function (options) {
 
 		stylint(file.path, rules)
 			.methods({
-				read: function () {
-					this.cache.filesLen = 1;
-					this.cache.fileNo = 1;
-					this.cache.file = file.path;
-					this.cache.files = [file.path];
-					this.state.quiet = true;
-
-					if (reporter) {
-						this.reporter = reporter;
-						this.config.reporterOptions = reporterOptions;
-					}
-
-					this.parse(null, [file.contents.toString(enc)]);
-				},
 				done: function () {
 					var warningsOrErrors = [].concat(this.cache.errs, this.cache.warnings);
 
