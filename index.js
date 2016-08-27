@@ -20,17 +20,12 @@ var failReporter = function (options) {
 
 module.exports = function (options) {
 	options = options || {};
-	var reporter = options.reporter;
 	var rules = options.rules;
-	var reporterOptions;
 
-	if (reporter) {
-		if (typeof reporter === 'string') {
-			reporter = require(reporter);
-		} else if (typeof reporter === 'object') {
-			reporterOptions = reporter.reporterOptions;
-			reporter = require(reporter.reporter);
-		}
+	if(options.reporter && typeof options.reporter === 'object') {
+// 		rules = rules || {};
+// 		rules.reporterOptions = options.reporter.reporterOptions;
+		options.reporter = options.reporter.reporter;
 	}
 
 	return through.obj(function (file, enc, cb) {
@@ -46,20 +41,6 @@ module.exports = function (options) {
 
 		stylint(file.path, rules)
 			.methods({
-				read: function () {
-					this.cache.filesLen = 1;
-					this.cache.fileNo = 1;
-					this.cache.file = file.path;
-					this.cache.files = [file.path];
-					this.state.quiet = true;
-
-					if (reporter) {
-						this.reporter = reporter;
-						this.config.reporterOptions = reporterOptions;
-					}
-
-					this.parse(null, [file.contents.toString(enc)]);
-				},
 				done: function () {
 					var warningsOrErrors = [].concat(this.cache.errs, this.cache.warnings);
 
