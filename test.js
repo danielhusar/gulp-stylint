@@ -199,7 +199,7 @@ it('It should accept custom reporter', function (cb) {
 		var logCall = log.getCall(0).args[0].trim();
 		var firstWarning = logCall.split('\n')[1].trim().replace(/\s\s+/g, ' ');
 
-		assert.equal(chalk.stripColor(firstWarning), 'line 2: unecessary semicolon found');
+		assert.equal(chalk.stripColor(firstWarning), 'line 2 - unecessary semicolon found');
 		cb();
 	});
 
@@ -222,7 +222,7 @@ it('It should accept custom reporter with custom options', function (cb) {
 		var logCall = log.getCall(0).args[0].trim();
 		var firstWarning = logCall.split('\n')[1].trim().replace(/\s\s+/g, ' ');
 
-		assert.equal(chalk.stripColor(firstWarning), 'line 2: unecessary semicolon found margin: 0px;');
+		assert.equal(chalk.stripColor(firstWarning), 'line 2 - unecessary semicolon found margin: 0px;');
 		cb();
 	});
 

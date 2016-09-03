@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "gulp-util": "^3.0.0",
-    "stylint": "^1.0.11",
+    "stylint": "1.3.7",
     "through2": "^0.6.1"
   },
   "devDependencies": {
