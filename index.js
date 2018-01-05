@@ -65,9 +65,7 @@ module.exports = function (options) {
 					var warningsOrErrors = [].concat(this.cache.errs, this.cache.warnings);
 
 					if (warningsOrErrors.length) {
-						var msg = warningsOrErrors.filter(function (str) {
-							return !!str;
-						}).join('\n\n');
+						var msg = warningsOrErrors.filter(Boolean).join('\n\n');
 						msg += '\n' + this.cache.msg;
 						file.stylint = {msg: msg, errors: this.cache.errs.length > 0, warnings: this.cache.warnings.length > 0};
 					}
