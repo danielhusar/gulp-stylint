@@ -54,8 +54,8 @@ it('It should log zero units', function (cb) {
 	stream = stylint({});
 	reportStream.on('end', function () {
 		var warnings = log.getCall(0).args[0].split('\n');
-		assert.equal(warnings[0].trim(), 'Warning: unnecessary semicolon found');
-		assert.equal(warnings[4].trim(), 'Warning: 0 is preferred. Unit value is unnecessary');
+		assert.equal(chalk.stripColor(warnings[1].trim()), '2:15 semicolons warning unnecessary semicolon found');
+		assert.equal(chalk.stripColor(warnings[4].trim()), '2:11 zeroUnits warning 0 is preferred. Unit value is unnecessary');
 		cb();
 	});
 
@@ -199,7 +199,7 @@ it('It should accept custom reporter', function (cb) {
 		var logCall = log.getCall(0).args[0].trim();
 		var firstWarning = logCall.split('\n')[1].trim().replace(/\s\s+/g, ' ');
 
-		assert.equal(chalk.stripColor(firstWarning), 'line 2 - unnecessary semicolon found');
+		assert.equal(chalk.stripColor(firstWarning), 'line 2 col 15 unnecessary semicolon found');
 		cb();
 	});
 
@@ -222,7 +222,7 @@ it('It should accept custom reporter with custom options', function (cb) {
 		var logCall = log.getCall(0).args[0].trim();
 		var firstWarning = logCall.split('\n')[1].trim().replace(/\s\s+/g, ' ');
 
-		assert.equal(chalk.stripColor(firstWarning), 'line 2 - unnecessary semicolon found margin: 0px;');
+		assert.equal(chalk.stripColor(firstWarning), 'line 2 col 15 unnecessary semicolon found margin: 0px;');
 		cb();
 	});
 
