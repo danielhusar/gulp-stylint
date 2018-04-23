@@ -1,5 +1,5 @@
 'use strict';
-var gutil = require('gulp-util');
+var PluginError = require('plugin-error');
 var through = require('through2');
 var stylint = require('stylint');
 
@@ -10,7 +10,7 @@ var failReporter = function (options) {
 
 	return through.obj(function (file, enc, cb) {
 		if (file.stylint && (file.stylint.errors || (failOnWarning && file.stylint.warnings))) {
-			return cb(new gutil.PluginError('gulp-stylint', 'Stylint failed for ' + file.relative), file);
+			return cb(new PluginError('gulp-stylint', 'Stylint failed for ' + file.relative), file);
 		}
 
 		this.push(file);
@@ -42,7 +42,7 @@ module.exports = function (options) {
 		}
 
 		if (file.isStream()) {
-			return cb(gutil.PluginError('gulp-stylint', 'Streaming not supported'), file);
+			return cb(new PluginError('gulp-stylint', 'Streaming not supported'), file);
 		}
 
 		stylint(file.path, rules)
@@ -87,7 +87,7 @@ module.exports.reporter = function (reporter, options) {
 			return failReporter(options);
 		}
 
-		throw new gutil.PluginError('gulp-stylint', reporter + ' is not a reporter');
+		throw new PluginError('gulp-stylint', reporter + ' is not a reporter');
 	}
 
 	var logger = (reporter || {}).logger || console.log;

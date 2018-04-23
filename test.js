@@ -5,7 +5,7 @@
 var assert = require('assert');
 var fs = require('fs');
 var path = require('path');
-var gutil = require('gulp-util');
+var Vinyl = require('vinyl');
 var sinon = require('sinon');
 var chalk = require('chalk');
 var stylint = require('./');
@@ -17,7 +17,7 @@ function file(filenames) {
 	files.forEach(function (filename) {
 		var pathToFile = path.resolve('fixtures', filename);
 
-		stream.write(new gutil.File({
+		stream.write(new Vinyl({
 			path: pathToFile,
 			contents: fs.readFileSync(pathToFile)
 		}));
